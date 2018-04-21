@@ -1,0 +1,17 @@
+{
+  "name": "learning",
+  "version": "1.0.0",
+  "description": "learning electron",
+  "main": "app.js",
+  "dependencies": {
+    "npm": "^5.8.0"
+  },
+  "devDependencies": {
+    "electron": "^1.8.4"
+  },
+  "scripts": {
+    "test": "test-learning"
+  },
+  "author": "Ankur",
+  "license": "ISC"
+}

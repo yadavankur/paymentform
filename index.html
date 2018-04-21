@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>LFS</title>
+
+  <style type="text/css">
+  </style>
+
+  <!-- Scripts -->
+  <script>
+    //delete module.exports
+  </script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <!--
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+  -->
+
+  <script src="./main.js" charset="utf-8"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.3/ace.js" type="text/javascript" charset="utf-8"></script> -->
+  <script src="../ace-builds-master/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="./mystyle.css">
+
+</head>
+
+<body>
+
+  <div class="container-fluid">
+    <div ng-app="myApp" ng-controller="mainCtrl">
+
+      <div ng-controller="formCtrl">
+        <form name='UserForm' novalidate>
+          <div class="row">
+            <div class="col-sm-8 onetwothree">
+              <div class="col-sm-4 one">
+                <div class="form-group col-sm-6">
+                  <label for="">Merchant</label>
+                  <div class="input-group">
+                    <span class="input-group-addon">Text</span>
+                    <input type="text" name="merchant" ng-model="user.merchant" class="form-control input-sm" placeholder="Merchant">
+                  </div>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="">Merchant ID *</label>
+                  <div class="input-group">
+                    <span class="input-group-addon">Num(9)</span>
+                    <input type="text" name="merchant_id" ng-model="user.merchant_id" class="form-control input-sm" placeholder="Merchant ID"
+                      required>
+                  </div>
+                </div>
+                <div class="form-group col-sm-12">
+                  <label for="">Logo URL</label>
+                  <div class="input-group ">
+                    <span class="input-group-addon">Http://</span>
+                    <input type="text" name="logo" ng-model="user.logo" class="form-control input-sm" placeholder="Logo URL">
+                    <form-error></form-error>
+                  </div>
+                </div>
+                <div class="form-group col-sm-12">
+                  <label for="">Return Path URL *</label>
+                  <div class="input-group ">
+                    <span class="input-group-addon">URL://</span>
+                    <input type="text" name="return_path" ng-model="user.return_path" class="form-control input-sm" placeholder="Return URL">
+                    <form-error></form-error>
+                  </div>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="card_accountNumber">Card AccountNumber *</label>
+                  <div class="input-group ">
+                    <span class="input-group-addon">Text</span>
+                    <input type="text" name="card_accountNumber" ng-model="user.card_accountNumber" class="form-control input-sm" placeholder="Card Account Number">
+                    <form-error></form-error>
+                  </div>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="smsCode">SMS Code **</label>
+                  <div class="input-group ">
+                    <span class="input-group-addon">Text</span>
+                    <input type="text" name="smsCode" ng-model="user.smsCode" class="form-control input-sm" placeholder="SMS Code">
+                    <form-error></form-error>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4 two">
+                <div class="form-group col-sm-12">
+                  <label for="reference">Reference *</label>
+                  <div class="input-group ">
+                    <span class="input-group-addon">Text</span>
+                    <input type="text" name="reference" ng-model="user.reference" class="form-control input-sm" value="ay-201803211508">
+                    <form-error></form-error>
+                  </div>
+                </div>
+                <div class="form-group col-sm-12">
+                  <label for="">Accepted Cards</label>
+                  <div class="input-group ">
+                    <span class="input-group-addon">text,text</span>
+                    <input type="text" name="accepted_cards" ng-model="user.accepted_cards" class="form-control input-sm" placeholder="Accepted Cards: go,gem,...">
+                    <form-error></form-error>
+                  </div>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="promo_code">Promo Code *</label>
+                  <div class="input-group ">
+                    <span class="input-group-addon">Num(4)</span>
+                    <input type="text" name="promo_code" ng-model="user.promo_code" class="form-control input-sm" placeholder="promo_code">
+                    <form-error></form-error>
+                  </div>
+                </div>
+                <div class="form-group col-sm-12">
+                  <label for="promo_description">Promo description *</label>
+                  <div class="input-group ">
+                    <span class="input-group-addon">Text</span>
+                    <input type="text" name="promo_description" ng-model="user.promo_description" class="form-control input-sm" placeholder="Promo Description">
+                    <form-error></form-error>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-4 three">
+                <div class="form-group col-sm-6">
+                  <label for="currency">Currency *</label>
+                  <div class="input-group ">
+                    <span class="input-group-addon">AUD/NZD</span>
+                    <input type="text" name="currency" ng-model="user.currency" class="form-control input-sm" placeholder="Currency">
+                    <form-error></form-error>
+                  </div>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="amount">Amount *</label>
+                  <div class="input-group ">
+                    <span class="input-group-addon">$</span>
+                    <input type="text" name="amount" ng-model="user.amount" class="form-control input-sm" placeholder="Amount">
+                    <form-error></form-error>
+                  </div>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="card_number">Card Number *</label>
+                  <div class="input-group ">
+                    <span class="input-group-addon">Num</span>
+                    <input type="text" name="card_number" ng-model="user.card_number" class="form-control input-sm" placeholder="Card Number">
+                    <form-error></form-error>
+                  </div>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="expiry_month">Expiry Month *</label>
+                  <div class="input-group ">
+                    <span class="input-group-addon">MM</span>
+                    <input type="text" name="expiry_month" ng-model="user.expiry_month" class="form-control input-sm" placeholder="Expiry Month">
+                    <form-error></form-error>
+                  </div>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="expiry_year">Expiry Year *</label>
+                  <div class="input-group ">
+                    <span class="input-group-addon">YYYY</span>
+                    <input type="text" name="expiry_year" ng-model="user.expiry_year" class="form-control input-sm" placeholder="Expiry Year">
+                    <form-error></form-error>
+                  </div>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="cvv">CVV *</label>
+                  <div class="input-group ">
+                    <span class="input-group-addon">***</span>
+                    <input type="text" name="cvv" ng-model="user.cvv" class="form-control input-sm" placeholder="CVV">
+                    <form-error></form-error>
+                  </div>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="eapps_data">eapps data</label>
+                  <div class="input-group ">
+                    <span class="input-group-addon">Text</span>
+                    <input type="text" name="eapps_data" ng-model="user.eapps_data" class="form-control input-sm" placeholder="eapps_data">
+                    <form-error></form-error>
+                  </div>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="eapps_hop_data">eapps hop data</label>
+                  <div class="input-group ">
+                    <span class="input-group-addon">Text</span>
+                    <input type="text" name="eapps_hop_data" ng-model="user.eapps_hop_data" class="form-control input-sm" placeholder="eapps_hop_data">
+                    <form-error></form-error>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div ng-controller="itemBuilderCtrl as builder">
+                <div class="row itemBuilder">
+                  <div class="col-sm-10">
+                    <div class="form-group col-sm-3">
+                      <label for="itemBuilderPC">Product Code</label>
+                      <div class="input-group">
+                        <span class="input-group-addon">Num</span>
+                        <input type="text" name="itemBuilderPC" id="itemBuilderPC" ng-model="builder.pc" class="form-control input-sm" placeholder="Product Code">
+                        <form-error></form-error>
+                      </div>
+                    </div>
+                    <div class="form-group col-sm-3">
+                      <label for="itemBuilderDesc">Description</label>
+                      <div class="input-group">
+                        <span class="input-group-addon">Text</span>
+                        <input type="text" name="itemBuilderDesc" id="itemBuilderDesc" ng-model="builder.desc" class="form-control input-sm" placeholder="Description">
+                        <form-error></form-error>
+                      </div>
+                    </div>
+                    <div class="form-group col-sm-3">
+                      <label for="itemBuilderQty">Quantity</label>
+                      <div class="input-group ">
+                        <span class="input-group-addon">Num</span>
+                        <input type="text" name="itemBuilderQty" id="itemBuilderQty" ng-model="builder.qty" class="form-control input-sm" placeholder="Quantity">
+                        <form-error></form-error>
+                      </div>
+                    </div>
+                    <div class="form-group col-sm-3">
+                      <label for="itemBuilderTotal">Total</label>
+                      <div class="input-group ">
+                        <span class="input-group-addon">Num</span>
+                        <input type="text" name="itemBuilderTotal" id="itemBuilderTotal" ng-model="builder.total" class="form-control input-sm" placeholder="Total">
+                        <form-error></form-error>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <button class="btn btn-info btn-xs add" ng-click="add()">Add</button>
+                  </div>
+                </div>
+
+                <fieldset>
+                    <legend>Item(s):</legend>
+                    <div class="items">
+                      <table class="table table-condensed" id="itemsTable">
+                        <thead id="itemsTableBody">
+                          <tr>
+                            <th>Product Code</th>
+                            <th>Description</th>
+                            <th>Qty</th>
+                            <th>Total</th>
+                            <th>(-)</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr ng-repeat="item in user.items">
+                            <td ng-bind="item.pc"></td>
+                            <td ng-bind="item.desc"></td>
+                            <td ng-bind="item.qty"></td>
+                            <td ng-bind="item.total"></td>
+                            <td ><button ng-click="remove(item)" type="button" class="btn btn-xs">x</button></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </fieldset>
+              </div>
+
+             
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-4">
+              <button class="btn btn-info btn-xs" ng-click="reset()">Reset</button>
+              <button class="btn btn-primary btn-xs" ng-click="createForm()">CreateForm</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <br>
+
+      <!-- <textarea rows="15" cols="80" name="comment" form="usrform">
+      <input type='hidden' name=merchant value="{{user.merchant}}">
+      </textarea>-->
+
+      <div class="row">
+        <div ng-controller="requestCtrl" class="ng-scope">
+
+          <div class="col-sm-8">
+            <div class="form-control" name="requestForm" id="requestForm"></div>
+            <button class="btn btn-primary btn-xs" ng-click="validate()">Validate</button>
+
+          </div>
+
+          <div class="col-sm-4">
+            <div id="requestTableDiv">
+              <table class="table table-condensed" id="RequestParams">
+                <tbody id="reqkeyValue">
+                  <tr>
+                    <th>Key</th>
+                    <th>Value</th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <button class="btn btn-primary btn-xs" ng-click="getResponse()">Send Request</button>
+          </div>
+        </div>
+      </div>
+      <br>
+
+      <div class="row">
+        <div ng-controller="ResponseCtrl">
+          <div class="col-sm-8">
+            <div class="form-control" name="ResponseForm" id="ResponseForm">
+
+            </div>
+            <br>
+            <div class="console" id="myConsole">
+              <div class="input-group col-sm-6">
+                <span class="input-group-addon glyphicon glyphicon-time"></span>
+                <span class="input-group-addon glyphicon glyphicon-chevron-right"></span>
+                <input type="text" class="form-control input-sm" placeholder="&lt;&gt;" id="myConsoleSent" readonly>
+                <form-error></form-error>
+              </div>
+              <div class="input-group col-sm-6">
+                <span class="input-group-addon glyphicon glyphicon-time"></span>
+                <span class="input-group-addon glyphicon glyphicon-chevron-left"></span>
+                <input type="text" class="form-control input-sm" placeholder="&lt;&gt;" id="myConsoleSent" readonly>
+                <form-error></form-error>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-3">
+            <table class="table table-condensed" id="ResponseParams">
+              <tbody id="respkeyValue">
+                <tr>
+                  <th>Key</th>
+                  <th>Value</th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <br>
+
+        </div>
+
+
+      </div>
+
+    </div>
+  </div>
+
+</body>
+
+<script>
+  if (jQuery) console.log('jQuery is loaded');
+</script>
+
+</html>
